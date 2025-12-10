@@ -45,6 +45,11 @@
         button:hover {
             background-color: #ff3333;
         }
+        #estado {
+            margin-top: 15px;
+            opacity: 0.8;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -56,7 +61,7 @@
     <input type="text" id="videoURL" placeholder="https://youtube.com/..." required>
     <button onclick="descargarVideo()">Descargar</button>
 
-    <p id="estado" style="margin-top:15px; opacity: 0.8;"></p>
+    <p id="estado"></p>
 </div>
 
 <script>
@@ -69,33 +74,36 @@ async function descargarVideo() {
         return;
     }
 
-    estado.textContent = "Procesando... puede tardar si Render está despertando ⏳";
+    estado.textContent = "Procesando... puede tardar unos segundos ⏳";
+
+    // Render necesita form-data, no JSON
+    const formData = new FormData();
+    formData.append("url", url);
 
     try {
         const response = await fetch("https://yt-download-cqe9.onrender.com/download", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ url })
+            body: formData
         });
 
-        const data = await response.json();
-
-        if (data.error) {
-            estado.textContent = "Error: " + data.error;
+        if (!response.ok) {
+            estado.textContent = "Error en el servidor.";
             return;
         }
 
-        if (data.download_url) {
-            estado.textContent = "Descargando archivo...";
-            window.location.href = data.download_url;
-        } else {
-            estado.textContent = "Descarga lista.";
-        }
-    } catch (e) {
-        estado.textContent = "Error conectando al servidor.";
-        console.error(e);
+        // Recibir archivo mp3
+        const blob = await response.blob();
+        const downloadUrl = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = downloadUrl;
+        a.download = "audio.mp3"; // Nombre por defecto
+        a.click();
+
+        estado.textContent = "Descarga completada ✔";
+    } catch (err) {
+        estado.textContent = "Error conectando al servidor (Render puede estar despertando).";
+        console.error(err);
     }
 }
 </script>
