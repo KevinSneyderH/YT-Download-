@@ -2,4 +2,7 @@ services:
   - type: web
     name: yt-download
     env: python
-    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    region: oregon
+    plan: free
+    buildCommand: ""
+    startCommand: "gunicorn app:app"
