@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YT Downloader</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+            font-family: Arial, sans-serif;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            text-align: center;
+            width: 350px;
+            backdrop-filter: blur(10px);
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+        button {
+            width: 95%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background-color: #ff4d4d;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ff3333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Descargar MP3</h2>
+    <p>Pega la URL del video de YouTube</p>
+
+    <form action="/download" method="post">
+        <input type="text" name="url" placeholder="https://youtube.com/..." required>
+        <button type="submit">Descargar</button>
+    </form>
+</div>
+
+</body>
+</html>
